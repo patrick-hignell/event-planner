@@ -1,13 +1,13 @@
 import * as Path from 'node:path'
 
 import express from 'express'
-import eventsRoutes from './routes/events'
+import eventsRoutes from './routes/events.ts'
 
 const server = express()
 server.use(express.json())
 
 // ADD YOUR API ROUTES HERE
-server.use('/api/vi/events', eventsRoutes)
+server.use('/api/v1/events', eventsRoutes)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))
