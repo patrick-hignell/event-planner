@@ -140,7 +140,7 @@ function Schedule() {
           <h2>{day[0][0] && day[0][0].day}</h2>
           <div
             className="flex flex-row p-3 gap-2"
-            style={{ width: widthFactor * day.length + 80 }}
+            style={{ width: widthFactor * day.length * 1.25 }}
           >
             {day[0][0] &&
               day.map((col, colIndex) => (
