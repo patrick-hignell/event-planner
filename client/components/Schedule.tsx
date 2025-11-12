@@ -93,6 +93,7 @@ function Schedule() {
   type StringPair = { startTime: string; endTime: string }
   const dayStartEnd: StringPair[] = []
   const dayHours: string[][] = []
+  let maxDayLength = 0
   const heightFactor = 100
   const widthFactor = 140
   if (schedule[0][0][0]) {
@@ -117,7 +118,7 @@ function Schedule() {
         }
       })
     })
-    //console.log(dayStartEnd)
+    console.log(dayStartEnd)
     // console.log(Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)))
     // console.log(
     //   (Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)) -
@@ -162,6 +163,9 @@ function Schedule() {
     })
 
     console.log(dayHours)
+    schedule.forEach((day) => {
+      if (day.length > maxDayLength) maxDayLength = day.length
+    })
   }
 
   return (
@@ -171,9 +175,32 @@ function Schedule() {
         <div key={dayIndex} className="p-3 gap-2 bg-blue-400 rounded-lg">
           <h2>{day[0][0] && day[0][0].day}</h2>
           <div
-            className="flex flex-row p-3 gap-2"
-            style={{ width: widthFactor * day.length * 1.25 }}
+            className="flex flex-row p-3 gap-2 "
+            style={{ width: widthFactor * day.length * 1.25 + 60 }}
           >
+            {day[0][0] && (
+              <div className="relative mr-10 rounded-lg bg-yellow-400">
+                {dayHours[dayIndex].map((hour, index) => (
+                  <p
+                    key={hour}
+                    className={`absolute rounded-md ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
+                    style={{
+                      left: `-12px`,
+                      top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${hour}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)))}%`,
+                      height:
+                        (Number(new Date(`1970-01-01T10:00Z`)) -
+                          60000 -
+                          Number(new Date(`1970-01-01T09:00Z`))) /
+                        50000,
+                      width: widthFactor * maxDayLength * 1.25 + 60,
+                      //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
+                    }}
+                  >
+                    {hour}
+                  </p>
+                ))}
+              </div>
+            )}
             {day[0][0] &&
               day.map((col, colIndex) => (
                 <div
