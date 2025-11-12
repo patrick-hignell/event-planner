@@ -138,12 +138,15 @@ function Schedule() {
       {schedule.map((day, dayIndex) => (
         <div key={dayIndex} className="p-3 gap-2 bg-blue-400 rounded-lg">
           <h2>{day[0][0] && day[0][0].day}</h2>
-          <div className="flex flex-row p-3 gap-2">
+          <div
+            className="flex flex-row p-3 gap-2"
+            style={{ width: widthFactor * day.length + 80 }}
+          >
             {day[0][0] &&
               day.map((col, colIndex) => (
                 <div
                   key={colIndex}
-                  className="flex relative p-3 gap-2 bg-red-400"
+                  className="flex relative p-3 gap-2"
                   style={{
                     height:
                       (Number(
