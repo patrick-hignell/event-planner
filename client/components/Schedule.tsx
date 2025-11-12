@@ -98,10 +98,11 @@ function Schedule() {
   if (error) {
     return <p>{error.message}</p>
   }
-
+  type StringPair = { startTime: string; endTime: string }
+  const dayStartEnd: StringPair[] = []
+  const heightFactor = 100
+  const widthFactor = 140
   if (schedule[0][0][0]) {
-    type StringPair = { startTime: string; endTime: string }
-    const dayStartEnd: StringPair[] = []
     schedule.forEach((day, index) => {
       dayStartEnd.push({
         startTime: day[0][0].startTime,
@@ -122,37 +123,84 @@ function Schedule() {
         }
       })
     })
-    console.log(dayStartEnd)
+    //console.log(dayStartEnd)
+    // console.log(Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)))
+    console.log(
+      (Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)) -
+        Number(new Date(`1970-01-01T${dayStartEnd[0].startTime}Z`))) /
+        50000,
+    )
   }
 
   return (
     <div className="flex flex-col p-3 gap-2 color bg-green-400 rounded-lg">
       <h1>Schedule</h1>
-      {schedule.map((day, index) => (
-        <div key={index} className="p-3 gap-2 bg-blue-400 rounded-lg">
+      {schedule.map((day, dayIndex) => (
+        <div key={dayIndex} className="p-3 gap-2 bg-blue-400 rounded-lg">
           <h2>{day[0][0] && day[0][0].day}</h2>
           <div className="flex flex-row p-3 gap-2">
-            {day.map((column, index) => (
-              <div key={index} className="flex flex-col p-3 gap-2">
-                {column.map((slot) => (
-                  <div
-                    key={`${Object.values(slot)}`}
-                    className="flex flex-col p-3 gap-2 bg-orange-400 rounded-lg outline outline-solid outline-2"
-                  >
-                    <p>Start Time: {slot.startTime}</p>
-                    <p>End Time: {slot.endTime}</p>
-                    <p>Name: {slot.name}</p>
-                    <p>Location: {slot.location}</p>
-                    <br></br>
-                  </div>
-                ))}
-              </div>
-            ))}
+            {day[0][0] &&
+              day.map((col, colIndex) => (
+                <div
+                  key={colIndex}
+                  className="flex relative p-3 gap-2 bg-red-400"
+                  style={{
+                    height:
+                      (Number(
+                        new Date(
+                          `1970-01-01T${dayStartEnd[dayIndex].endTime}Z`,
+                        ),
+                      ) -
+                        Number(
+                          new Date(
+                            `1970-01-01T${dayStartEnd[dayIndex].startTime}Z`,
+                          ),
+                        )) /
+                      50000,
+                  }}
+                >
+                  {col.map((slot) => (
+                    <div
+                      key={`${Object.values(slot)}`}
+                      className={`box-border overflow-hidden absolute w-40 flex flex-col pb-1 pl-1 pr-1 gap-y-1 bg-orange-400 rounded-lg outline outline-solid outline-2`}
+                      style={{
+                        left: `${widthFactor * colIndex}px`,
+                        top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${slot.startTime}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)))}%`,
+                        height:
+                          (Number(new Date(`1970-01-01T${slot.endTime}Z`)) -
+                            60000 -
+                            Number(new Date(`1970-01-01T${slot.startTime}Z`))) /
+                          50000,
+                        //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
+                      }}
+                    >
+                      <p>{slot.name}</p>
+                      <p>
+                        {slot.startTime} - {slot.endTime}
+                      </p>
+                      <br></br>
+                    </div>
+                  ))}
+                </div>
+              ))}
           </div>
         </div>
       ))}
     </div>
   )
+}
+
+function inverseLerp(value: number, a: number, b: number) {
+  // Handle the case where a and b are the same to avoid division by zero
+  if (a === b) {
+    return a === value ? 0 : value < a ? 0 : 1 // Or handle as an error, depending on requirements
+  }
+
+  const t = (value - a) / (b - a)
+
+  // Clamp the result to ensure it stays within the 0-1 range,
+  // as the value might be outside the a-b range.
+  return Math.max(0, Math.min(1, t))
 }
 
 export default Schedule
