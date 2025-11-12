@@ -63,15 +63,7 @@ function Schedule() {
             arrayOfArrays[arrayOfArrays.length - 1][j][
               arrayOfArrays[arrayOfArrays.length - 1][j].length - 1
             ]
-          console.log(latestTimeSlot)
-          console.log(
-            Number(new Date(`${array[i].day} ${array[i].startTime}:00`)),
-          )
-          console.log(
-            Number(
-              new Date(`${latestTimeSlot.day} ${latestTimeSlot.endTime}:00`),
-            ),
-          )
+
           if (
             Number(new Date(`${array[i].day} ${array[i].startTime}:00`)) >=
             Number(
@@ -100,10 +92,12 @@ function Schedule() {
   }
   type StringPair = { startTime: string; endTime: string }
   const dayStartEnd: StringPair[] = []
+  const dayHours: string[][] = []
   const heightFactor = 100
   const widthFactor = 140
   if (schedule[0][0][0]) {
     schedule.forEach((day, index) => {
+      dayHours.push([])
       dayStartEnd.push({
         startTime: day[0][0].startTime,
         endTime: day[0][0].endTime,
@@ -125,11 +119,49 @@ function Schedule() {
     })
     //console.log(dayStartEnd)
     // console.log(Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)))
-    console.log(
-      (Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)) -
-        Number(new Date(`1970-01-01T${dayStartEnd[0].startTime}Z`))) /
-        50000,
-    )
+    // console.log(
+    //   (Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)) -
+    //     Number(new Date(`1970-01-01T${dayStartEnd[0].startTime}Z`))) /
+    //     3600000,
+    // )
+
+    // dayStartEnd.forEach((day) =>
+    //   dayHours.push(
+    //     (Number(new Date(`1970-01-01T${day.endTime}Z`)) -
+    //       Number(new Date(`1970-01-01T${day.startTime}Z`))) /
+    //       3600000,
+    //   ),
+    // )
+
+    dayStartEnd.forEach((day, index) => {
+      const tempStart = day.startTime.slice(0, -2) + '00'
+      let tempEnd = ''
+      day.endTime.slice(-2) === '00'
+        ? (tempEnd = day.endTime)
+        : (tempEnd = (Number(day.endTime.slice(0, 2)) + 1).toString() + ':00')
+      const length =
+        (Number(new Date(`1970-01-01T${tempEnd}Z`)) -
+          Number(new Date(`1970-01-01T${tempStart}Z`))) /
+        3600000
+      console.log(tempStart)
+      console.log(tempEnd)
+      console.log(length)
+      for (let i = 0; i < length + 1; i++) {
+        let tempTime = (Number(tempStart.slice(0, 2)) + i).toString() + ':00'
+        if (tempTime.length < 5) {
+          tempTime = '0' + tempTime
+        }
+        dayHours[index].push(
+          (Number(tempStart.slice(0, 2)) + i).toString() + ':00',
+        )
+      }
+      // (
+      //   Number(new Date(`1970-01-01T${tempStart}Z`)) -
+      //     Number(new Date(`1970-01-01T${tempEnd}Z`)),
+      // ) / 3600000
+    })
+
+    console.log(dayHours)
   }
 
   return (
