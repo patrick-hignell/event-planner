@@ -20,6 +20,7 @@ function Schedule() {
         timeSlots.push(...eventToTimeSlot(event))
       })
       const orderedTimeSlots: TimeSlot[][][] = orderTimeSlots([...timeSlots])
+      console.log(orderedTimeSlots)
       setSchedule([...orderedTimeSlots])
     }
   }, [events])
@@ -151,15 +152,27 @@ function Schedule() {
         let tempTime = (Number(tempStart.slice(0, 2)) + i).toString() + ':00'
         if (tempTime.length < 5) {
           tempTime = '0' + tempTime
+          console.log('temptime: ' + tempTime)
         }
-        dayHours[index].push(
-          (Number(tempStart.slice(0, 2)) + i).toString() + ':00',
-        )
+        dayHours[index].push(tempTime)
       }
       // (
       //   Number(new Date(`1970-01-01T${tempStart}Z`)) -
       //     Number(new Date(`1970-01-01T${tempEnd}Z`)),
       // ) / 3600000
+      console.log('hour length')
+      console.log(
+        (Number(new Date(`1970-01-01T09:58Z`)) -
+          60000 -
+          Number(new Date(`1970-01-01T09:00Z`))) /
+          50000,
+      )
+      console.log('hour length: ')
+      console.log(
+        (Number(new Date(`1970-01-01T10:00Z`)) -
+          Number(new Date(`1970-01-01T09:00Z`))) /
+          3600000,
+      )
     })
 
     console.log(dayHours)
@@ -186,12 +199,8 @@ function Schedule() {
                     className={`absolute rounded-md ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
                     style={{
                       left: `-12px`,
-                      top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${hour}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)))}%`,
-                      height:
-                        (Number(new Date(`1970-01-01T10:00Z`)) -
-                          60000 -
-                          Number(new Date(`1970-01-01T09:00Z`))) /
-                        50000,
+                      top: `${70.8 * index}px`,
+                      height: 69.62,
                       width: widthFactor * maxDayLength * 1.25 + 60,
                       //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
                     }}
@@ -208,7 +217,7 @@ function Schedule() {
                   className="flex relative p-3 gap-2"
                   style={{
                     height:
-                      (Number(
+                      ((Number(
                         new Date(
                           `1970-01-01T${dayStartEnd[dayIndex].endTime}Z`,
                         ),
@@ -218,7 +227,8 @@ function Schedule() {
                             `1970-01-01T${dayStartEnd[dayIndex].startTime}Z`,
                           ),
                         )) /
-                      50000,
+                        3600000) *
+                      70.8,
                   }}
                 >
                   {col.map((slot) => (
@@ -227,12 +237,13 @@ function Schedule() {
                       className={`box-border overflow-hidden absolute w-40 flex flex-col pb-1 pl-1 pr-1 gap-y-1 bg-orange-400 rounded-lg outline outline-solid outline-2`}
                       style={{
                         left: `${widthFactor * colIndex}px`,
-                        top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${slot.startTime}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`)), Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)))}%`,
+                        top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${slot.startTime}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][0]}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][dayHours[dayIndex].length - 1]}Z`)))}%`,
                         height:
-                          (Number(new Date(`1970-01-01T${slot.endTime}Z`)) -
+                          ((Number(new Date(`1970-01-01T${slot.endTime}Z`)) -
                             60000 -
                             Number(new Date(`1970-01-01T${slot.startTime}Z`))) /
-                          50000,
+                            3600000) *
+                          70.8,
                         //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
                       }}
                     >
