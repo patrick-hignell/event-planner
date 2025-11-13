@@ -188,19 +188,18 @@ function Schedule() {
         <div key={dayIndex} className="p-3 gap-2 bg-blue-400 rounded-lg">
           <h2>{day[0][0] && day[0][0].day}</h2>
           <div
-            className="flex flex-row p-3 gap-2 "
-            style={{ width: widthFactor * day.length * 1.25 + 60 }}
+            className="grid grid-cols-1 grid-rows-1 p-3 gap-2 "
+            style={{ width: widthFactor * day.length * 1.25 + 82 }}
           >
             {day[0][0] && (
-              <div className="relative mr-10 rounded-lg bg-yellow-400">
+              <div className="col-start-1 row-start-1 relative mr-10 rounded-lg">
                 {dayHours[dayIndex].map((hour, index) => (
                   <p
                     key={hour}
-                    className={`absolute rounded-md ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
+                    className={`rounded-md mt-[0px] ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
                     style={{
-                      left: `-12px`,
-                      top: `${70.8 * index}px`,
-                      height: 69.62,
+                      height:
+                        index < dayHours[dayIndex].length - 1 ? 70.8 : 7.08,
                       width: widthFactor * maxDayLength * 1.25 + 60,
                       //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
                     }}
@@ -214,7 +213,7 @@ function Schedule() {
               day.map((col, colIndex) => (
                 <div
                   key={colIndex}
-                  className="flex relative p-3 gap-2"
+                  className="col-start-1 row-start-1 flex relative p-3 gap-2"
                   style={{
                     height:
                       ((Number(
