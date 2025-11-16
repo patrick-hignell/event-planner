@@ -1,8 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
-import { getEvents } from '../apis/events'
 import { useEffect, useState } from 'react'
-import { Event, TimeSlot } from '../../models/events'
+import { Event, EventData, TimeSlot } from '../../models/events'
 import EventEditor from './EventEditor'
+import { useEvents } from '../hooks/useEvents'
 
 function Schedule() {
   const blankEvent: Event = {
@@ -20,8 +19,12 @@ function Schedule() {
   const {
     data: events,
     isPending,
+    isError,
     error,
-  } = useQuery({ queryKey: ['events'], queryFn: () => getEvents() })
+    delete: deleteEvent,
+    add: addEvent,
+    //edit: editEvent,
+  } = useEvents()
   //const queryClient = useQueryClient()
 
   useEffect(() => {
@@ -95,13 +98,9 @@ function Schedule() {
     return arrayOfArrays
   }
 
-  if (isPending) {
-    return <p>loading...</p>
-  }
+  if (isPending) return <h2>Is Loading...</h2>
+  if (isError) return <h2>{String(error)}</h2>
 
-  if (error) {
-    return <p>{error.message}</p>
-  }
   type StringPair = { startTime: string; endTime: string }
   const dayStartEnd: StringPair[] = []
   const dayHours: string[][] = []
@@ -199,6 +198,16 @@ function Schedule() {
     //console.log(event)
   }
 
+  function handleCreate(newEvent: EventData) {
+    addEvent.mutate(newEvent)
+    setSelectedEvent(blankEvent)
+  }
+
+  function handleDelete(id: number | string) {
+    deleteEvent.mutate(id)
+    setSelectedEvent(blankEvent)
+  }
+
   return (
     <div className="flex flex-col gap-4 items-center">
       <div className="self-center flex flex-col p-3 gap-2 color bg-green-400 rounded-lg outline outline-solid outline-2">
@@ -284,7 +293,11 @@ function Schedule() {
           </div>
         ))}
       </div>
-      <EventEditor {...selectedEvent} />
+      <EventEditor
+        event={selectedEvent}
+        onCreate={handleCreate}
+        onDelete={() => handleDelete(selectedEvent.id)}
+      />
     </div>
   )
 }

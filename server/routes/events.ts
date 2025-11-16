@@ -8,8 +8,7 @@ router.post('/', async (req, res) => {
   try {
     const newEventData = req.body
     const newEvent = await db.createEvent(newEventData)
-    res.json(newEvent)
-    res.sendStatus(200)
+    res.status(200).json(newEvent)
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.error(err.message)
@@ -42,8 +41,7 @@ router.put('/:id', async (req, res) => {
     const id = Number(req.params.id)
     const newEventData = req.body
     const newEvent = await db.updateEvent(newEventData, id)
-    res.json(newEvent)
-    res.sendStatus(200)
+    res.status(200).json(newEvent)
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.error(err.message)
@@ -59,8 +57,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const id = Number(req.params.id)
     const deletedEvent = await db.deleteEvent(id)
-    res.json(deletedEvent)
-    res.sendStatus(204)
+    res.status(204).json(deletedEvent)
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.error(err.message)
