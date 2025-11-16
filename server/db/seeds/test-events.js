@@ -52,5 +52,25 @@ export async function seed(knex) {
       price:
         'NZD 80.00 (sandwich box- 10 people);NZD NZD 120.00 (small grazing box- 2-4 people);NZD 220.00 (large grazing box- 6-10 people)',
     },
+    {
+      id: 6,
+      name: 'VERONICA BELL CEREMONY',
+      host: 'ART DECO TRUST EVENT',
+      bio: "A Moment of Commemoration. We gather with the Acting Dean of the Anglican Cathedral, the Westshore Sea Scouts, and members from the Napier Pipe Band, to honour the memory of the 1931 earthquake — one of New Zealand's greatest natural disasters. At the heart of the ceremony stands the Veronica Bell, a lasting symbol of both tragedy and strength. Gifted in recognition of the Navy's tireless efforts in the aftermath, it continues to be rung as a reminder of resilience, compassion, and community. As we remember those who lost their lives, we also give thanks for the enduring spirit that carried Hawke's Bay forward in the face of devastation. The ceremony concludes with the Veronica Bell escorted to the Cathedral by a bagpiper and drummer from the Napier Pipe Band.",
+      dates: 'February 22, 2026 12:00-12:30',
+      location: 'Veronica Sun Bay, Napier Soundshell,Marine Parade, Napier',
+      price: 'NZD 0.00',
+    },
+    {
+      id: 9,
+      name: 'THE DECO TIMES',
+      host: 'ART DECO TRUST EVENT',
+      bio: "Stay up to date with today 's events by picking up your complimentary copy of The Deco Times from one of our young newspaper hawkers on the street or from The Art Deco Trust (Memorial Square). Printed daily, it features the full schedule of performers on Emerson Street and the Sound Shell, details of all festival happenings, late additions to the programme since October, and special announcements. ",
+      dates:
+        'February 20, 2026 13:00-15:00;February 21, 2026 10:00-12:00;February 22, 2026 10:00-12:00',
+      location:
+        'Emerson Street, Napier Soundshell, Marine Parade or the Art Deco Trust, Memorial Square. Napier',
+      price: 'NZ 0.00',
+    },
   ])
 }

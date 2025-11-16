@@ -2,9 +2,20 @@ import { useQuery } from '@tanstack/react-query'
 import { getEvents } from '../apis/events'
 import { useEffect, useState } from 'react'
 import { Event, TimeSlot } from '../../models/events'
+import EventEditor from './EventEditor'
 
 function Schedule() {
+  const blankEvent: Event = {
+    id: 0,
+    name: '',
+    host: '',
+    bio: '',
+    dates: '',
+    location: '',
+    price: '',
+  }
   const [schedule, setSchedule] = useState<TimeSlot[][][]>([[[]]])
+  const [selectedEvent, setSelectedEvent] = useState<Event>(blankEvent)
 
   const {
     data: events,
@@ -20,7 +31,7 @@ function Schedule() {
         timeSlots.push(...eventToTimeSlot(event))
       })
       const orderedTimeSlots: TimeSlot[][][] = orderTimeSlots([...timeSlots])
-      console.log(orderedTimeSlots)
+      //console.log(orderedTimeSlots)
       setSchedule([...orderedTimeSlots])
     }
   }, [events])
@@ -96,7 +107,8 @@ function Schedule() {
   const dayHours: string[][] = []
   let maxDayLength = 0
   const heightFactor = 100
-  const widthFactor = 140
+  const widthFactor = 175
+  const offset = 46
   if (schedule[0][0][0]) {
     schedule.forEach((day, index) => {
       dayHours.push([])
@@ -119,7 +131,7 @@ function Schedule() {
         }
       })
     })
-    console.log(dayStartEnd)
+    //console.log(dayStartEnd)
     // console.log(Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)))
     // console.log(
     //   (Number(new Date(`1970-01-01T${dayStartEnd[0].endTime}Z`)) -
@@ -145,14 +157,14 @@ function Schedule() {
         (Number(new Date(`1970-01-01T${tempEnd}Z`)) -
           Number(new Date(`1970-01-01T${tempStart}Z`))) /
         3600000
-      console.log(tempStart)
-      console.log(tempEnd)
-      console.log(length)
+      //console.log(tempStart)
+      //console.log(tempEnd)
+      //console.log(length)
       for (let i = 0; i < length + 1; i++) {
         let tempTime = (Number(tempStart.slice(0, 2)) + i).toString() + ':00'
         if (tempTime.length < 5) {
           tempTime = '0' + tempTime
-          console.log('temptime: ' + tempTime)
+          //console.log('temptime: ' + tempTime)
         }
         dayHours[index].push(tempTime)
       }
@@ -160,104 +172,119 @@ function Schedule() {
       //   Number(new Date(`1970-01-01T${tempStart}Z`)) -
       //     Number(new Date(`1970-01-01T${tempEnd}Z`)),
       // ) / 3600000
-      console.log('hour length')
-      console.log(
-        (Number(new Date(`1970-01-01T09:58Z`)) -
-          60000 -
-          Number(new Date(`1970-01-01T09:00Z`))) /
-          50000,
-      )
-      console.log('hour length: ')
-      console.log(
-        (Number(new Date(`1970-01-01T10:00Z`)) -
-          Number(new Date(`1970-01-01T09:00Z`))) /
-          3600000,
-      )
+      //console.log('hour length')
+      // console.log(
+      //   (Number(new Date(`1970-01-01T09:58Z`)) -
+      //     60000 -
+      //     Number(new Date(`1970-01-01T09:00Z`))) /
+      //     50000,
+      // )
+      // console.log('hour length: ')
+      // console.log(
+      //   (Number(new Date(`1970-01-01T10:00Z`)) -
+      //     Number(new Date(`1970-01-01T09:00Z`))) /
+      //     3600000,
+      // )
     })
 
-    console.log(dayHours)
+    //console.log(dayHours)
     schedule.forEach((day) => {
       if (day.length > maxDayLength) maxDayLength = day.length
     })
   }
 
+  function handleClick(eventId: number) {
+    const event = events?.find((event) => event.id === eventId)
+    if (event) setSelectedEvent(event)
+    //console.log(event)
+  }
+
   return (
-    <div className="flex flex-col p-3 gap-2 color bg-green-400 rounded-lg">
-      <h1>Schedule</h1>
-      {schedule.map((day, dayIndex) => (
-        <div key={dayIndex} className="p-3 gap-2 bg-blue-400 rounded-lg">
-          <h2>{day[0][0] && day[0][0].day}</h2>
+    <div className="flex flex-col gap-4 items-center">
+      <div className="self-center flex flex-col p-3 gap-2 color bg-green-400 rounded-lg outline outline-solid outline-2">
+        <h1>Schedule</h1>
+        {schedule.map((day, dayIndex) => (
           <div
-            className="grid grid-cols-1 grid-rows-1 p-3 gap-2 "
-            style={{ width: widthFactor * day.length * 1.25 + 82 }}
+            key={dayIndex}
+            className="p-3 gap-2 bg-blue-400 rounded-lg outline outline-solid outline-2"
           >
-            {day[0][0] && (
-              <div className="col-start-1 row-start-1 relative mr-10 rounded-lg">
-                {dayHours[dayIndex].map((hour, index) => (
-                  <p
-                    key={hour}
-                    className={`rounded-md mt-[0px] ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
-                    style={{
-                      height:
-                        index < dayHours[dayIndex].length - 1 ? 70.8 : 7.08,
-                      width: widthFactor * maxDayLength * 1.25 + 60,
-                      //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
-                    }}
-                  >
-                    {hour}
-                  </p>
-                ))}
-              </div>
-            )}
-            {day[0][0] &&
-              day.map((col, colIndex) => (
-                <div
-                  key={colIndex}
-                  className="col-start-1 row-start-1 flex relative p-3 gap-2"
-                  style={{
-                    height:
-                      ((Number(
-                        new Date(
-                          `1970-01-01T${dayStartEnd[dayIndex].endTime}Z`,
-                        ),
-                      ) -
-                        Number(
-                          new Date(
-                            `1970-01-01T${dayStartEnd[dayIndex].startTime}Z`,
-                          ),
-                        )) /
-                        3600000) *
-                      70.8,
-                  }}
-                >
-                  {col.map((slot) => (
-                    <div
-                      key={`${Object.values(slot)}`}
-                      className={`box-border overflow-hidden absolute w-40 flex flex-col pb-1 pl-1 pr-1 gap-y-1 bg-orange-400 rounded-lg outline outline-solid outline-2`}
+            <h2>{day[0][0] && day[0][0].day}</h2>
+            <div
+              className="grid grid-cols-1 grid-rows-1 p-3 gap-2 "
+              style={{ width: widthFactor * day.length + 82 }}
+            >
+              {day[0][0] && (
+                <div className="col-start-1 row-start-1 relative mr-10 rounded-lg">
+                  {dayHours[dayIndex].map((hour, index) => (
+                    <p
+                      key={hour}
+                      className={`rounded-md mb-[0px] ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
                       style={{
-                        left: `${widthFactor * colIndex}px`,
-                        top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${slot.startTime}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][0]}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][dayHours[dayIndex].length - 1]}Z`)))}%`,
                         height:
-                          ((Number(new Date(`1970-01-01T${slot.endTime}Z`)) -
-                            60000 -
-                            Number(new Date(`1970-01-01T${slot.startTime}Z`))) /
-                            3600000) *
-                          70.8,
+                          index < dayHours[dayIndex].length - 1 ? 70.8 : 7.08,
+                        width: widthFactor * maxDayLength + 60,
                         //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
                       }}
                     >
-                      <p>{slot.name}</p>
-                      <p>
-                        {slot.startTime} - {slot.endTime}
-                      </p>
-                      <br></br>
-                    </div>
+                      {hour}
+                    </p>
                   ))}
                 </div>
-              ))}
+              )}
+              {day[0][0] &&
+                day.map((col, colIndex) => (
+                  <div
+                    key={colIndex}
+                    className="col-start-1 row-start-1 flex relative p-3 gap-2"
+                    style={{
+                      height:
+                        ((Number(
+                          new Date(
+                            `1970-01-01T${dayStartEnd[dayIndex].endTime}Z`,
+                          ),
+                        ) -
+                          Number(
+                            new Date(
+                              `1970-01-01T${dayStartEnd[dayIndex].startTime}Z`,
+                            ),
+                          )) /
+                          3600000) *
+                        70.8,
+                    }}
+                  >
+                    {col.map((slot) => (
+                      <button
+                        onClick={() => handleClick(slot.eventId)}
+                        key={`${Object.values(slot)}`}
+                        className={`z-10 box-border overflow-hidden absolute w-40 flex flex-col pb-1 pl-1 pr-1 gap-y-1 bg-orange-400 rounded-lg outline outline-solid outline-2`}
+                        style={{
+                          left: `${widthFactor * colIndex + offset}px`,
+                          top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${slot.startTime}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][0]}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][dayHours[dayIndex].length - 1]}Z`)))}%`,
+                          height:
+                            ((Number(new Date(`1970-01-01T${slot.endTime}Z`)) -
+                              60000 -
+                              Number(
+                                new Date(`1970-01-01T${slot.startTime}Z`),
+                              )) /
+                              3600000) *
+                            70.8,
+                          //top: `${heightFactor * (Number(new Date(`1970-01-01T${slot.startTime}Z`)) / (Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].endTime}Z`)) - Number(new Date(`1970-01-01T${dayStartEnd[dayIndex].startTime}Z`))))}px`,
+                        }}
+                      >
+                        <p>{slot.name}</p>
+                        <p>
+                          {slot.startTime} - {slot.endTime}
+                        </p>
+                        <br></br>
+                      </button>
+                    ))}
+                  </div>
+                ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+      <EventEditor {...selectedEvent} />
     </div>
   )
 }
