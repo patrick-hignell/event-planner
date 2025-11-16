@@ -23,7 +23,7 @@ function Schedule() {
     error,
     delete: deleteEvent,
     add: addEvent,
-    //edit: editEvent,
+    edit: editEvent,
   } = useEvents()
   //const queryClient = useQueryClient()
 
@@ -40,11 +40,19 @@ function Schedule() {
   }, [events])
 
   function eventToTimeSlot(event: Event) {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long', // Full weekday name (e.g., "Monday")
+      day: 'numeric', // Day of the month (e.g., "17")
+      month: 'short', // Full month name (e.g., "November")
+      year: 'numeric', // Full year (e.g., "2025")
+    }
     const tempTimeSlots: TimeSlot[] = []
     event.dates.split(';').forEach((timeSlot) => {
       tempTimeSlots.push({
         eventId: event.id,
-        day: timeSlot.slice(0, timeSlot.indexOf(':') - 2).trimEnd(),
+        day: new Date(
+          timeSlot.slice(0, timeSlot.indexOf(':') - 2).trimEnd(),
+        ).toLocaleString('en-NZ', options),
         startTime: timeSlot.slice(
           timeSlot.indexOf(':') - 2,
           timeSlot.indexOf(':') + 3,
@@ -198,6 +206,11 @@ function Schedule() {
     //console.log(event)
   }
 
+  function handleEdit(newEvent: Event) {
+    editEvent.mutate(newEvent)
+    setSelectedEvent(blankEvent)
+  }
+
   function handleCreate(newEvent: EventData) {
     addEvent.mutate(newEvent)
     setSelectedEvent(blankEvent)
@@ -211,13 +224,14 @@ function Schedule() {
   return (
     <div className="flex flex-col gap-4 items-center">
       <div className="self-center flex flex-col p-3 gap-2 color bg-green-400 rounded-lg outline outline-solid outline-2">
-        <h1>Schedule</h1>
         {schedule.map((day, dayIndex) => (
           <div
             key={dayIndex}
             className="p-3 gap-2 bg-blue-400 rounded-lg outline outline-solid outline-2"
           >
-            <h2>{day[0][0] && day[0][0].day}</h2>
+            <h2 className="text-[110%]">
+              {day[0][0] && formatDate(day[0][0].day)}
+            </h2>
             <div
               className="grid grid-cols-1 grid-rows-1 p-3 gap-2 "
               style={{ width: widthFactor * day.length + 82 }}
@@ -227,7 +241,7 @@ function Schedule() {
                   {dayHours[dayIndex].map((hour, index) => (
                     <p
                       key={hour}
-                      className={`rounded-md mb-[0px] ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
+                      className={`text-sm indent-1 rounded-md mb-[0px] ${index < dayHours[dayIndex].length - 1 ? `outline-black outline-dotted outline-2` : ``}`}
                       style={{
                         height:
                           index < dayHours[dayIndex].length - 1 ? 70.8 : 7.08,
@@ -295,6 +309,7 @@ function Schedule() {
       </div>
       <EventEditor
         event={selectedEvent}
+        onEdit={handleEdit}
         onCreate={handleCreate}
         onDelete={() => handleDelete(selectedEvent.id)}
       />
@@ -313,6 +328,28 @@ function inverseLerp(value: number, a: number, b: number) {
   // Clamp the result to ensure it stays within the 0-1 range,
   // as the value might be outside the a-b range.
   return Math.max(0, Math.min(1, t))
+}
+
+function formatDate(date: string) {
+  const dateArray = date.split(' ')
+  dateArray[0] = dateArray[0].toUpperCase()
+  dateArray[1] = dateArray[1] + nthNumber(Number(dateArray[1]))
+  dateArray[2] = dateArray[2].toUpperCase()
+  return dateArray.join(' ')
+}
+
+function nthNumber(number: number) {
+  if (number > 3 && number < 21) return 'th'
+  switch (number % 10) {
+    case 1:
+      return 'st'
+    case 2:
+      return 'nd'
+    case 3:
+      return 'rd'
+    default:
+      return 'th'
+  }
 }
 
 export default Schedule

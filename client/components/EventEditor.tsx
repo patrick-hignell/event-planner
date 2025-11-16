@@ -1,22 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Event, EventData } from '../../models/events'
 
 interface Props {
   event: Event
+  onEdit: (editEvent: Event) => void
   onCreate: (newEvent: EventData) => void
   onDelete: (deleteEvent: number) => void
 }
 
-function EventEditor({ event, onCreate, onDelete }: Props) {
-  // const blankEvent: Event = {
-  //   id: 0,
-  //   name: '',
-  //   host: '',
-  //   bio: '',
-  //   dates: '',
-  //   location: '',
-  //   price: '',
-  // }
+function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
+  const blankEvent: Event = {
+    id: 0,
+    name: '',
+    host: '',
+    bio: '',
+    dates: '',
+    location: '',
+    price: '',
+  }
   const blankEventData: EventData = {
     name: '',
     host: '',
@@ -27,6 +28,20 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
   }
   const [mode, setMode] = useState('')
   const [newEvent, setNewEvent] = useState<EventData>(blankEventData)
+  const [editEvent, setEditEvent] = useState<Event>(blankEvent)
+
+  useEffect(() => {
+    setMode('')
+    setNewEvent(blankEventData)
+    setEditEvent(event)
+  }, [event])
+
+  useEffect(() => {
+    document.querySelectorAll('textarea').forEach((area) => {
+      area.style.height = 'auto' // Reset height to recalculate
+      area.style.height = area.scrollHeight + 'px' // Set height to scrollHeight
+    })
+  }, [mode])
 
   function handleClick(selectedMode: string) {
     setMode(selectedMode)
@@ -38,103 +53,70 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
       | React.ChangeEvent<HTMLTextAreaElement>,
     inputType: string,
   ) {
-    switch (inputType) {
-      case 'name':
-        setNewEvent({ ...newEvent, name: e.target.value })
-        break
-      case 'host':
-        setNewEvent({ ...newEvent, host: e.target.value })
-        break
-      case 'bio':
-        setNewEvent({ ...newEvent, bio: e.target.value })
-        break
-      case 'dates':
-        setNewEvent({ ...newEvent, dates: e.target.value })
-        break
-      case 'location':
-        setNewEvent({ ...newEvent, location: e.target.value })
-        break
-      case 'price':
-        setNewEvent({ ...newEvent, price: e.target.value })
-        break
-      default:
-        console.log('no input type found')
-    }
+    if (mode === 'create')
+      switch (inputType) {
+        case 'name':
+          setNewEvent({ ...newEvent, name: e.target.value })
+          break
+        case 'host':
+          setNewEvent({ ...newEvent, host: e.target.value })
+          break
+        case 'bio':
+          setNewEvent({ ...newEvent, bio: e.target.value })
+          break
+        case 'dates':
+          setNewEvent({ ...newEvent, dates: e.target.value })
+          break
+        case 'location':
+          setNewEvent({ ...newEvent, location: e.target.value })
+          break
+        case 'price':
+          setNewEvent({ ...newEvent, price: e.target.value })
+          break
+        default:
+        //console.log('no input type found')
+      }
+    if (mode === 'edit')
+      switch (inputType) {
+        case 'name':
+          setEditEvent({ ...editEvent, name: e.target.value })
+          break
+        case 'host':
+          setEditEvent({ ...editEvent, host: e.target.value })
+          break
+        case 'bio':
+          setEditEvent({ ...editEvent, bio: e.target.value })
+          break
+        case 'dates':
+          setEditEvent({ ...editEvent, dates: e.target.value })
+          break
+        case 'location':
+          setEditEvent({ ...editEvent, location: e.target.value })
+          break
+        case 'price':
+          setEditEvent({ ...editEvent, price: e.target.value })
+          break
+        default:
+        //console.log('no input type found')
+      }
   }
 
   function handleConfirm() {
-    if (mode === 'create') {
-      const validMonths = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ]
-      let alertMessage = ''
-      const passed = Object.entries(newEvent).every(([key, value]) => {
-        if (value === '') {
-          alertMessage = `Please enter ${key}`
-          console.log(`Please enter ${key}`)
-          return false
-        }
-        if (key === 'dates') {
-          const datesPassed = value.split(';').every((entry: string) => {
-            const date = entry.split(' ')
-            if (date.length !== 4) {
-              alertMessage =
-                'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
-              console.log('wrong no. of strings')
-              return false
-            }
-            if (validMonths.includes(date[0]) === false) {
-              alertMessage =
-                'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
-              console.log('wrong month')
-              return false
-            }
-            if (
-              /^\d{1},$/.test(date[1]) === false &&
-              /^\d{2},$/.test(date[1]) === false
-            ) {
-              alertMessage =
-                'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
-              console.log('wrong day: ' + date[1])
-              return false
-            }
-            if (/^\d{4}$/.test(date[2]) === false) {
-              alertMessage =
-                'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
-              console.log('wrong year')
-              return false
-            }
-            if (/^\d{2}:\d{2}-\d{2}:\d{2}$/.test(date[3]) === false) {
-              alertMessage =
-                'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
-              console.log('wrong hours')
-              return false
-            }
-            return true
-          })
-          return datesPassed
-        } else {
-          return true
-        }
-      })
-      console.log(passed)
+    if (mode === 'edit') {
+      const passed = checkEvent(editEvent)
+      //console.log(passed)
+      if (passed) {
+        onEdit(editEvent as Event)
+        setEditEvent(blankEvent)
+        setMode('')
+      }
+    } else if (mode === 'create') {
+      const passed = checkEvent(newEvent)
+      //console.log(passed)
       if (passed) {
         onCreate(newEvent as EventData)
         setNewEvent(blankEventData)
         setMode('')
-      } else {
-        alert(alertMessage)
       }
     } else if (mode === 'delete') {
       if (event.id > 0) {
@@ -147,7 +129,7 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
   }
 
   return (
-    <div className="w-[41rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
+    <div className="bottom-0 w-[41rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
       {mode === '' && (
         <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
           <p className="flex justify-between">
@@ -176,15 +158,99 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
           </p>
         </div>
       )}
-      {mode === 'create' && (
+      {mode === 'edit' && (
         <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
           <p className="flex justify-between">
-            <label className="" htmlFor="name">
+            <label className="" htmlFor="editName">
               <b>Name: </b>
             </label>
             <input
               className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
-              id="name"
+              id="editName"
+              type="text"
+              placeholder="Enter name"
+              value={editEvent.name}
+              onChange={(e) => handleInputChange(e, 'name')}
+            />
+          </p>
+          <p className="flex justify-between">
+            <label className="" htmlFor="editHost">
+              <b>Host: </b>
+            </label>
+            <input
+              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              id="editHost"
+              type="text"
+              placeholder="Enter host"
+              value={editEvent.host}
+              onChange={(e) => handleInputChange(e, 'host')}
+            />
+          </p>
+          <p className="flex justify-between">
+            <label className="" htmlFor="editBio">
+              <b>Bio: </b>
+            </label>
+            <textarea
+              className="bg-transparent  w-10/12 resize-none outline-none placeholder-gray-500"
+              id="editBio"
+              placeholder="Enter bio"
+              value={editEvent.bio}
+              onChange={(e) => {
+                handleInputChange(e, 'bio')
+                autoResize(e)
+              }}
+            />
+          </p>
+          <p className="flex justify-between">
+            <label className="" htmlFor="editDates">
+              <b>Dates: </b>
+            </label>
+            <input
+              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              id="editDates"
+              type="text"
+              placeholder="Enter dates"
+              value={editEvent.dates}
+              onChange={(e) => handleInputChange(e, 'dates')}
+            />
+          </p>
+          <p className="flex justify-between">
+            <label className="" htmlFor="editLocation">
+              <b>Location: </b>
+            </label>
+            <input
+              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              id="editLocation"
+              type="text"
+              placeholder="Enter location"
+              value={editEvent.location}
+              onChange={(e) => handleInputChange(e, 'location')}
+            />
+          </p>
+          <p className="flex justify-between">
+            <label className="" htmlFor="editPrice">
+              <b>Price: </b>
+            </label>
+            <input
+              className="bg-transparent w-10/12 outline-none placeholder-gray-500 "
+              id="editPrice"
+              type="text"
+              placeholder="Enter price"
+              value={editEvent.price}
+              onChange={(e) => handleInputChange(e, 'price')}
+            />
+          </p>
+        </div>
+      )}
+      {mode === 'create' && (
+        <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
+          <p className="flex justify-between">
+            <label className="" htmlFor="createName">
+              <b>Name: </b>
+            </label>
+            <input
+              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              id="createName"
               type="text"
               placeholder="Enter name"
               value={newEvent.name}
@@ -192,12 +258,12 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
             />
           </p>
           <p className="flex justify-between">
-            <label className="" htmlFor="host">
+            <label className="" htmlFor="createHost">
               <b>Host: </b>
             </label>
             <input
               className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
-              id="host"
+              id="createHost"
               type="text"
               placeholder="Enter host"
               value={newEvent.host}
@@ -205,12 +271,12 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
             />
           </p>
           <p className="flex justify-between">
-            <label className="" htmlFor="bio">
+            <label className="" htmlFor="createBio">
               <b>Bio: </b>
             </label>
             <textarea
               className="bg-transparent  w-10/12 resize-none outline-none placeholder-gray-500"
-              id="bio"
+              id="createBio"
               placeholder="Enter bio"
               value={newEvent.bio}
               onChange={(e) => {
@@ -220,12 +286,12 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
             />
           </p>
           <p className="flex justify-between">
-            <label className="" htmlFor="dates">
+            <label className="" htmlFor="createDates">
               <b>Dates: </b>
             </label>
             <input
               className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
-              id="dates"
+              id="createDates"
               type="text"
               placeholder="Enter dates"
               value={newEvent.dates}
@@ -233,12 +299,12 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
             />
           </p>
           <p className="flex justify-between">
-            <label className="" htmlFor="location">
+            <label className="" htmlFor="createLocation">
               <b>Location: </b>
             </label>
             <input
               className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
-              id="location"
+              id="createLocation"
               type="text"
               placeholder="Enter location"
               value={newEvent.location}
@@ -246,12 +312,12 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
             />
           </p>
           <p className="flex justify-between">
-            <label className="" htmlFor="price">
+            <label className="" htmlFor="createPrice">
               <b>Price: </b>
             </label>
             <input
               className="bg-transparent w-10/12 outline-none placeholder-gray-500 "
-              id="price"
+              id="createPrice"
               type="text"
               placeholder="Enter price"
               value={newEvent.price}
@@ -314,6 +380,96 @@ function EventEditor({ event, onCreate, onDelete }: Props) {
 function autoResize(e: React.ChangeEvent<HTMLTextAreaElement>) {
   e.target.style.height = 'auto' // Reset height to recalculate
   e.target.style.height = e.target.scrollHeight + 'px' // Set height to scrollHeight
+}
+
+function checkEvent(testEvent: Event | EventData) {
+  const validMonths = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+  let alertMessage = ''
+  const passed = Object.entries(testEvent).every(([key, value]) => {
+    if (value === '') {
+      alertMessage = `Please enter ${key}`
+      //console.log(`Please enter ${key}`)
+      return false
+    }
+    if (key === 'dates') {
+      const datesPassed = value.split(';').every((entry: string) => {
+        const date = entry.split(' ')
+        if (date.length !== 4) {
+          alertMessage =
+            'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
+          //console.log('wrong no. of strings')
+          return false
+        }
+        if (validMonths.includes(date[0]) === false) {
+          alertMessage =
+            'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
+          //console.log('wrong month')
+          return false
+        }
+        if (
+          /^\d{1},$/.test(date[1]) === false &&
+          /^\d{2},$/.test(date[1]) === false
+        ) {
+          alertMessage =
+            'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
+          //console.log('wrong day: ' + date[1])
+          return false
+        }
+        if (/^\d{4}$/.test(date[2]) === false) {
+          alertMessage =
+            'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
+          //console.log('wrong year')
+          return false
+        }
+        if (/^\d{2}:\d{2}-\d{2}:\d{2}$/.test(date[3]) === false) {
+          alertMessage =
+            'Please enter dates in the correct format e.g. February 21, 2026 11:00-11:45. If entering multiple dates, separate with a semicolon ";"'
+          //console.log('wrong hours')
+          return false
+        }
+        if (
+          new Date(`1970-01-01T${date[3].split('-')[0]}Z`).getTime() ===
+          new Date(`1970-01-01T${date[3].split('-')[1]}Z`).getTime()
+        ) {
+          alertMessage = 'The event must last at least one minute'
+          //console.log('duration 0')
+          return false
+        }
+        if (
+          new Date(`1970-01-01T${date[3].split('-')[0]}Z`).getTime() >
+          new Date(`1970-01-01T${date[3].split('-')[1]}Z`).getTime()
+        ) {
+          alertMessage = 'Please refrain from creating a temporal paradox'
+          //console.log('hours end before they start')
+          return false
+        }
+        //console.log(new Date(`1970-01-01T${date[3].split('-')[0]}Z`))
+        //console.log(new Date(`1970-01-01T${date[3].split('-')[1]}Z`))
+        //console.log(`${date[3].split('-')[0]}`)
+        //console.log(`${date[3].split('-')[1]}`)
+        return true
+      })
+      return datesPassed
+    } else {
+      return true
+    }
+  })
+
+  if (!passed) alert(alertMessage)
+  return passed
 }
 
 export default EventEditor

@@ -16,7 +16,8 @@ body {
     sans-serif;
 }
 
-b {
+b,
+.b {
   font-weight: 500;
   text-transform: uppercase;
   text-decoration: underline;
