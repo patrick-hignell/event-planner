@@ -222,7 +222,13 @@ function Schedule() {
   }
 
   return (
-    <div className="flex flex-col gap-4 items-center">
+    <div className="flex flex-row gap-4 w-screen justify-start pl-3">
+      <EventEditor
+        event={selectedEvent}
+        onEdit={handleEdit}
+        onCreate={handleCreate}
+        onDelete={() => handleDelete(selectedEvent.id)}
+      />
       <div className="self-center flex flex-col p-3 gap-2 color bg-green-400 rounded-lg outline outline-solid outline-2">
         {schedule.map((day, dayIndex) => (
           <div
@@ -307,12 +313,6 @@ function Schedule() {
           </div>
         ))}
       </div>
-      <EventEditor
-        event={selectedEvent}
-        onEdit={handleEdit}
-        onCreate={handleCreate}
-        onDelete={() => handleDelete(selectedEvent.id)}
-      />
     </div>
   )
 }

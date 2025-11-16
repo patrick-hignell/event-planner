@@ -23,3 +23,117 @@ b,
   text-decoration: underline;
   font-size: 110%;
 }
+
+.editor.container {
+  display: flex;
+
+  min-height: 11.5rem;
+
+  flex: 1 1 0%;
+
+  flex-direction: column;
+
+  justify-content: space-evenly;
+
+  gap: 0.5rem;
+
+  overflow-y: scroll;
+
+  border-radius: 0.5rem;
+
+  background-color: rgb(252, 165, 165);
+
+  padding: 0.75rem;
+
+  outline-style: solid;
+
+  outline-width: 2px;
+}
+
+.editor.name {
+  flex: 1 1 0%;
+
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  text-align: center;
+
+  font-size: 2.25rem;
+
+  line-height: 2.5rem;
+}
+
+.editor.host {
+  flex: 1 1 0%;
+
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  text-align: center;
+
+  font-size: 1.5rem;
+
+  line-height: 2rem;
+}
+
+.editor.bio {
+  flex: 1 1 0%;
+
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  font-size: 1.25rem;
+
+  line-height: 1.75rem;
+}
+
+.editor.bio::placeholder {
+  text-align: center;
+}
+
+.editor.dates {
+  flex: 1 1 0%;
+
+  white-space: pre-wrap;
+
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  text-align: center;
+
+  font-size: 1.5rem;
+
+  line-height: 2rem;
+}
+
+.editor.location {
+  flex: 1 1 0%;
+
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  text-align: center;
+
+  font-size: 1.5rem;
+
+  line-height: 2rem;
+}
+
+.editor.price {
+  flex: 1 1 0%;
+
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  text-align: center;
+
+  font-size: 1.5rem;
+
+  line-height: 2rem;
+}

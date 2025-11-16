@@ -47,6 +47,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
     setMode(selectedMode)
   }
 
+  function handleCancel() {
+    setMode('')
+    setNewEvent(blankEventData)
+    setEditEvent(event)
+  }
+
   function handleInputChange(
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -129,43 +135,45 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
   }
 
   return (
-    <div className="bottom-0 w-[41rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
+    <div className="flex flex-col h-screen sticky top-0 bottom-0 w-[41rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
       {mode === '' && (
-        <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
-          <p className="flex justify-between">
-            <b>Name: </b>
-            <span className="w-10/12">{event.name}</span>
+        <div className="editor container">
+          <p className="flex">
+            <b className="w-1/6">Name: </b>
+            <span className="editor name">{event.name}</span>
           </p>
-          <p className="flex justify-between">
-            <b>Host: </b>
-            <span className="w-10/12">{event.host}</span>
+          <p className="flex">
+            <b className="w-1/6">Host: </b>
+            <span className="editor host">{event.host}</span>
           </p>
-          <p className="flex justify-between">
-            <b>Bio: </b>
-            <span className="w-10/12">{event.bio}</span>
+          <p className="flex">
+            <b className="w-1/6">Bio: </b>
+            <span className="editor bio">{event.bio}</span>
           </p>
-          <p className="flex justify-between">
-            <b>Dates: </b>
-            <span className="w-10/12">{event.dates}</span>
+          <p className="flex">
+            <b className="w-1/6">Dates: </b>
+            <span className="editor dates">
+              {event.dates.split(';').join('\n')}
+            </span>
           </p>
-          <p className="flex justify-between">
-            <b>Location: </b>
-            <span className="w-10/12">{event.location}</span>
+          <p className="flex">
+            <b className="w-1/6">Location: </b>
+            <span className="editor location">{event.location}</span>
           </p>
-          <p className="flex justify-between">
-            <b>Price: </b>
-            <span className="w-10/12">{event.price}</span>
+          <p className="flex">
+            <b className="w-1/6">Price: </b>
+            <span className="editor price">{event.price}</span>
           </p>
         </div>
       )}
       {mode === 'edit' && (
-        <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
-          <p className="flex justify-between">
-            <label className="" htmlFor="editName">
-              <b>Name: </b>
+        <div className="editor container">
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="editName">
+              Name:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor name outline-none placeholder-gray-500"
               id="editName"
               type="text"
               placeholder="Enter name"
@@ -173,12 +181,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'name')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="editHost">
-              <b>Host: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="editHost">
+              Host:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent editor host outline-none placeholder-gray-500"
               id="editHost"
               type="text"
               placeholder="Enter host"
@@ -186,12 +194,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'host')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="editBio">
-              <b>Bio: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="editBio">
+              Bio:
             </label>
             <textarea
-              className="bg-transparent  w-10/12 resize-none outline-none placeholder-gray-500"
+              className="bg-transparent  editor bio resize-none outline-none placeholder-gray-500"
               id="editBio"
               placeholder="Enter bio"
               value={editEvent.bio}
@@ -201,12 +209,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               }}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="editDates">
-              <b>Dates: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="editDates">
+              Dates:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor dates outline-none placeholder-gray-500"
               id="editDates"
               type="text"
               placeholder="Enter dates"
@@ -214,12 +222,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'dates')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="editLocation">
-              <b>Location: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="editLocation">
+              Location:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor location outline-none placeholder-gray-500"
               id="editLocation"
               type="text"
               placeholder="Enter location"
@@ -227,12 +235,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'location')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="editPrice">
-              <b>Price: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="editPrice">
+              Price:
             </label>
             <input
-              className="bg-transparent w-10/12 outline-none placeholder-gray-500 "
+              className="bg-transparent editor price outline-none placeholder-gray-500 "
               id="editPrice"
               type="text"
               placeholder="Enter price"
@@ -243,13 +251,13 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
         </div>
       )}
       {mode === 'create' && (
-        <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
-          <p className="flex justify-between">
-            <label className="" htmlFor="createName">
-              <b>Name: </b>
+        <div className="editor container">
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="createName">
+              Name:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor name outline-none placeholder-gray-500"
               id="createName"
               type="text"
               placeholder="Enter name"
@@ -257,12 +265,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'name')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="createHost">
-              <b>Host: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="createHost">
+              Host:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor host outline-none placeholder-gray-500"
               id="createHost"
               type="text"
               placeholder="Enter host"
@@ -270,12 +278,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'host')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="createBio">
-              <b>Bio: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="createBio">
+              Bio:
             </label>
             <textarea
-              className="bg-transparent  w-10/12 resize-none outline-none placeholder-gray-500"
+              className="bg-transparent  editor bio resize-none outline-none placeholder-gray-500"
               id="createBio"
               placeholder="Enter bio"
               value={newEvent.bio}
@@ -285,12 +293,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               }}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="createDates">
-              <b>Dates: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="createDates">
+              Dates:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor dates outline-none placeholder-gray-500"
               id="createDates"
               type="text"
               placeholder="Enter dates"
@@ -298,12 +306,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'dates')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="createLocation">
-              <b>Location: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="createLocation">
+              Location:
             </label>
             <input
-              className="bg-transparent  w-10/12 outline-none placeholder-gray-500"
+              className="bg-transparent  editor location outline-none placeholder-gray-500"
               id="createLocation"
               type="text"
               placeholder="Enter location"
@@ -311,12 +319,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
               onChange={(e) => handleInputChange(e, 'location')}
             />
           </p>
-          <p className="flex justify-between">
-            <label className="" htmlFor="createPrice">
-              <b>Price: </b>
+          <p className="flex">
+            <label className="w-1/6 b" htmlFor="createPrice">
+              Price:
             </label>
             <input
-              className="bg-transparent w-10/12 outline-none placeholder-gray-500 "
+              className="bg-transparent editor price outline-none placeholder-gray-500 "
               id="createPrice"
               type="text"
               placeholder="Enter price"
@@ -366,7 +374,7 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
             Confirm
           </button>
           <button
-            onClick={() => handleClick('')}
+            onClick={() => handleCancel()}
             className="bg-red-400 rounded-lg p-3 w-28 outline outline-solid outline-2"
           >
             Cancel
