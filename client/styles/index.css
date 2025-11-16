@@ -50,6 +50,22 @@ b,
   outline-width: 2px;
 }
 
+.editor.messageContainer {
+  align-content: center;
+}
+
+.editor.message {
+  padding-left: 0.5rem;
+
+  padding-right: 0.5rem;
+
+  text-align: center;
+
+  font-size: 2.25rem;
+
+  line-height: 2.5rem;
+}
+
 .editor.name {
   flex: 1 1 0%;
 
@@ -90,6 +106,9 @@ b,
   line-height: 1.75rem;
 }
 
+textarea.editor.bio {
+  text-align: center;
+}
 .editor.bio::placeholder {
   text-align: center;
 }
@@ -136,4 +155,12 @@ b,
   font-size: 1.5rem;
 
   line-height: 2rem;
+}
+
+b.editor {
+  width: 20%;
+}
+
+.b.editor {
+  width: 20%;
 }

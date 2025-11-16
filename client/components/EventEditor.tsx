@@ -135,151 +135,176 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-screen sticky top-0 bottom-0 w-[41rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
-      {mode === '' && (
+    <div className="z-20 flex flex-shrink-0 flex-col h-screen sticky top-0 left-0 bottom-0 w-[30rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
+      {mode === '' && event.id !== 0 && (
         <div className="editor container">
           <p className="flex">
-            <b className="w-1/6">Name: </b>
+            <b className="editor">Name: </b>
             <span className="editor name">{event.name}</span>
           </p>
           <p className="flex">
-            <b className="w-1/6">Host: </b>
+            <b className="editor">Host: </b>
             <span className="editor host">{event.host}</span>
           </p>
           <p className="flex">
-            <b className="w-1/6">Bio: </b>
+            <b className="editor">Bio: </b>
             <span className="editor bio">{event.bio}</span>
           </p>
           <p className="flex">
-            <b className="w-1/6">Dates: </b>
+            <b className="editor">Dates: </b>
             <span className="editor dates">
               {event.dates.split(';').join('\n')}
             </span>
           </p>
           <p className="flex">
-            <b className="w-1/6">Location: </b>
+            <b className="editor">Location: </b>
             <span className="editor location">{event.location}</span>
           </p>
           <p className="flex">
-            <b className="w-1/6">Price: </b>
+            <b className="editor">Price: </b>
             <span className="editor price">{event.price}</span>
           </p>
         </div>
       )}
+      {mode === '' && event.id === 0 && (
+        <div className="editor container messageContainer">
+          <p className="editor message"> Select an event</p>
+        </div>
+      )}
       {mode === 'edit' && (
         <div className="editor container">
-          <p className="flex">
-            <label className="w-1/6 b" htmlFor="editName">
-              Name:
-            </label>
-            <input
-              className="bg-transparent  editor name outline-none placeholder-gray-500"
-              id="editName"
-              type="text"
-              placeholder="Enter name"
-              value={editEvent.name}
-              onChange={(e) => handleInputChange(e, 'name')}
-            />
-          </p>
-          <p className="flex">
-            <label className="w-1/6 b" htmlFor="editHost">
-              Host:
-            </label>
-            <input
-              className="bg-transparent editor host outline-none placeholder-gray-500"
-              id="editHost"
-              type="text"
-              placeholder="Enter host"
-              value={editEvent.host}
-              onChange={(e) => handleInputChange(e, 'host')}
-            />
-          </p>
-          <p className="flex">
-            <label className="w-1/6 b" htmlFor="editBio">
-              Bio:
-            </label>
-            <textarea
-              className="bg-transparent  editor bio resize-none outline-none placeholder-gray-500"
-              id="editBio"
-              placeholder="Enter bio"
-              value={editEvent.bio}
-              onChange={(e) => {
-                handleInputChange(e, 'bio')
-                autoResize(e)
-              }}
-            />
-          </p>
-          <p className="flex">
-            <label className="w-1/6 b" htmlFor="editDates">
-              Dates:
-            </label>
-            <input
-              className="bg-transparent  editor dates outline-none placeholder-gray-500"
-              id="editDates"
-              type="text"
-              placeholder="Enter dates"
-              value={editEvent.dates}
-              onChange={(e) => handleInputChange(e, 'dates')}
-            />
-          </p>
-          <p className="flex">
-            <label className="w-1/6 b" htmlFor="editLocation">
-              Location:
-            </label>
-            <input
-              className="bg-transparent  editor location outline-none placeholder-gray-500"
-              id="editLocation"
-              type="text"
-              placeholder="Enter location"
-              value={editEvent.location}
-              onChange={(e) => handleInputChange(e, 'location')}
-            />
-          </p>
-          <p className="flex">
-            <label className="w-1/6 b" htmlFor="editPrice">
-              Price:
-            </label>
-            <input
-              className="bg-transparent editor price outline-none placeholder-gray-500 "
-              id="editPrice"
-              type="text"
-              placeholder="Enter price"
-              value={editEvent.price}
-              onChange={(e) => handleInputChange(e, 'price')}
-            />
-          </p>
+          {event.id === 0 ? (
+            <p className="editor message">Select an event to edit</p>
+          ) : (
+            <>
+              <p className="flex">
+                <label className="editor b" htmlFor="editName">
+                  Name:
+                </label>
+                <textarea
+                  className="bg-transparent  editor name outline-none resize-none placeholder-gray-500"
+                  id="editName"
+                  placeholder="Enter name"
+                  value={editEvent.name}
+                  onChange={(e) => {
+                    handleInputChange(e, 'name')
+                    autoResize(e)
+                  }}
+                />
+              </p>
+              <p className="flex">
+                <label className="editor b" htmlFor="editHost">
+                  Host:
+                </label>
+                <textarea
+                  className="bg-transparent editor host resize-none outline-none placeholder-gray-500"
+                  id="editHost"
+                  placeholder="Enter host"
+                  value={editEvent.host}
+                  onChange={(e) => {
+                    handleInputChange(e, 'host')
+                    autoResize(e)
+                  }}
+                />
+              </p>
+              <p className="flex">
+                <label className="editor b" htmlFor="editBio">
+                  Bio:
+                </label>
+                <textarea
+                  className="bg-transparent  editor bio resize-none outline-none placeholder-gray-500"
+                  id="editBio"
+                  placeholder="Enter bio"
+                  value={editEvent.bio}
+                  onChange={(e) => {
+                    handleInputChange(e, 'bio')
+                    autoResize(e)
+                  }}
+                />
+              </p>
+              <p className="flex">
+                <label className="editor b" htmlFor="editDates">
+                  Dates:
+                </label>
+                <textarea
+                  className="bg-transparent resize-none editor dates outline-none placeholder-gray-500"
+                  id="editDates"
+                  placeholder="Enter dates"
+                  value={editEvent.dates}
+                  onChange={(e) => {
+                    handleInputChange(e, 'dates')
+                    autoResize(e)
+                  }}
+                />
+              </p>
+              <p className="flex">
+                <label className="editor b" htmlFor="editLocation">
+                  Location:
+                </label>
+                <textarea
+                  className="bg-transparent resize-none editor location outline-none placeholder-gray-500"
+                  id="editLocation"
+                  placeholder="Enter location"
+                  value={editEvent.location}
+                  onChange={(e) => {
+                    handleInputChange(e, 'location')
+                    autoResize(e)
+                  }}
+                />
+              </p>
+              <p className="flex">
+                <label className="editor b" htmlFor="editPrice">
+                  Price:
+                </label>
+                <textarea
+                  className="bg-transparent editor price resize-none outline-none placeholder-gray-500 "
+                  id="editPrice"
+                  placeholder="Enter price"
+                  value={editEvent.price}
+                  onChange={(e) => {
+                    handleInputChange(e, 'price')
+                    autoResize(e)
+                  }}
+                />
+              </p>
+            </>
+          )}
         </div>
       )}
       {mode === 'create' && (
         <div className="editor container">
           <p className="flex">
-            <label className="w-1/6 b" htmlFor="createName">
+            <label className="editor b" htmlFor="createName">
               Name:
             </label>
-            <input
-              className="bg-transparent  editor name outline-none placeholder-gray-500"
+            <textarea
+              className="bg-transparent resize-none editor name outline-none placeholder-gray-500"
               id="createName"
-              type="text"
               placeholder="Enter name"
               value={newEvent.name}
-              onChange={(e) => handleInputChange(e, 'name')}
+              onChange={(e) => {
+                handleInputChange(e, 'name')
+                autoResize(e)
+              }}
             />
           </p>
           <p className="flex">
-            <label className="w-1/6 b" htmlFor="createHost">
+            <label className="editor b" htmlFor="createHost">
               Host:
             </label>
-            <input
-              className="bg-transparent  editor host outline-none placeholder-gray-500"
+            <textarea
+              className="bg-transparent resize-none editor host outline-none placeholder-gray-500"
               id="createHost"
-              type="text"
               placeholder="Enter host"
               value={newEvent.host}
-              onChange={(e) => handleInputChange(e, 'host')}
+              onChange={(e) => {
+                handleInputChange(e, 'host')
+                autoResize(e)
+              }}
             />
           </p>
           <p className="flex">
-            <label className="w-1/6 b" htmlFor="createBio">
+            <label className="editor b" htmlFor="createBio">
               Bio:
             </label>
             <textarea
@@ -294,52 +319,60 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
             />
           </p>
           <p className="flex">
-            <label className="w-1/6 b" htmlFor="createDates">
+            <label className="editor b" htmlFor="createDates">
               Dates:
             </label>
-            <input
-              className="bg-transparent  editor dates outline-none placeholder-gray-500"
+            <textarea
+              className="bg-transparent resize-none editor dates outline-none placeholder-gray-500"
               id="createDates"
-              type="text"
               placeholder="Enter dates"
               value={newEvent.dates}
-              onChange={(e) => handleInputChange(e, 'dates')}
+              onChange={(e) => {
+                handleInputChange(e, 'dates')
+                autoResize(e)
+              }}
             />
           </p>
           <p className="flex">
-            <label className="w-1/6 b" htmlFor="createLocation">
+            <label className="editor b" htmlFor="createLocation">
               Location:
             </label>
-            <input
-              className="bg-transparent  editor location outline-none placeholder-gray-500"
+            <textarea
+              className="bg-transparent resize-none editor location outline-none placeholder-gray-500"
               id="createLocation"
-              type="text"
               placeholder="Enter location"
               value={newEvent.location}
-              onChange={(e) => handleInputChange(e, 'location')}
+              onChange={(e) => {
+                handleInputChange(e, 'location')
+                autoResize(e)
+              }}
             />
           </p>
           <p className="flex">
-            <label className="w-1/6 b" htmlFor="createPrice">
+            <label className="editor b" htmlFor="createPrice">
               Price:
             </label>
-            <input
-              className="bg-transparent editor price outline-none placeholder-gray-500 "
+            <textarea
+              className="bg-transparent resize-none editor price outline-none placeholder-gray-500 "
               id="createPrice"
-              type="text"
               placeholder="Enter price"
               value={newEvent.price}
-              onChange={(e) => handleInputChange(e, 'price')}
+              onChange={(e) => {
+                handleInputChange(e, 'price')
+                autoResize(e)
+              }}
             />
           </p>
         </div>
       )}
       {mode === 'delete' && (
-        <div className="flex flex-col p-3 gap-2 rounded-lg bg-red-300 outline outline-solid outline-2 min-h-[11.5rem]">
-          {event.name.length > 0 ? (
-            <p>Are you sure you want to delete the {event.name} event?</p>
+        <div className="editor container messageContainer">
+          {event.id !== 0 ? (
+            <p className="editor message">
+              Are you sure you want to delete the {event.name} event?
+            </p>
           ) : (
-            <p> Select an event to delete</p>
+            <p className="editor message"> Select an event to delete</p>
           )}
         </div>
       )}
@@ -462,6 +495,27 @@ function checkEvent(testEvent: Event | EventData) {
         ) {
           alertMessage = 'Please refrain from creating a temporal paradox'
           //console.log('hours end before they start')
+          return false
+        }
+        if (Number(date[3].split('-')[1].split(':')[0]) > 24) {
+          alertMessage = "There aren't that many hours in a day (on earth)"
+          console.log('>24')
+          return false
+        }
+        if (
+          Number(date[3].split('-')[1].split(':')[0]) === 24 &&
+          Number(date[3].split('-')[1].split(':')[1]) > 0
+        ) {
+          alertMessage = "There aren't that many hours in a day (on earth)"
+          console.log('>mins/day')
+          return false
+        }
+        if (
+          Number(date[3].split('-')[0].split(':')[1]) >= 60 ||
+          Number(date[3].split('-')[1].split(':')[1]) >= 60
+        ) {
+          alertMessage = "There aren't that many minutes in an hour (on earth)"
+          console.log('>mins/hour')
           return false
         }
         //console.log(new Date(`1970-01-01T${date[3].split('-')[0]}Z`))
