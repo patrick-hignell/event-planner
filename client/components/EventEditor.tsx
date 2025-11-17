@@ -135,9 +135,9 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
   }
 
   return (
-    <div className="z-20 flex flex-shrink-0 flex-col h-screen sticky top-0 left-0 bottom-0 w-[30rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
+    <div className="z-20 flex flex-shrink-0 flex-col lg:h-screen w-full lg:sticky top-0 left-0 bottom-0 lg:w-[30rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
       {mode === '' && event.id !== 0 && (
-        <div className="editor container">
+        <div className="editor contain">
           <p className="flex">
             <b className="editor">Name: </b>
             <span className="editor name">{event.name}</span>
@@ -167,12 +167,12 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
         </div>
       )}
       {mode === '' && event.id === 0 && (
-        <div className="editor container messageContainer">
+        <div className="editor contain messageContainer">
           <p className="editor message"> Select an event</p>
         </div>
       )}
       {mode === 'edit' && (
-        <div className="editor container">
+        <div className="editor contain">
           {event.id === 0 ? (
             <p className="editor message">Select an event to edit</p>
           ) : (
@@ -272,7 +272,7 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
         </div>
       )}
       {mode === 'create' && (
-        <div className="editor container">
+        <div className="editor contain">
           <p className="flex">
             <label className="editor b" htmlFor="createName">
               Name:
@@ -366,7 +366,7 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
         </div>
       )}
       {mode === 'delete' && (
-        <div className="editor container messageContainer">
+        <div className="editor contain messageContainer">
           {event.id !== 0 ? (
             <p className="editor message">
               Are you sure you want to delete the {event.name} event?
