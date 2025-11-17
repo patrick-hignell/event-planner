@@ -283,7 +283,7 @@ function Schedule() {
                       <button
                         onClick={() => handleClick(slot.eventId)}
                         key={`${Object.values(slot)}`}
-                        className={`z-10 box-border overflow-hidden absolute w-40 flex flex-col pb-1 pl-1 pr-1 gap-y-1 bg-orange-400 rounded-lg outline outline-solid outline-2`}
+                        className={`z-10 box-border overflow-hidden absolute w-40 flex flex-col pb-1 pl-1 pr-1 gap-y-2 bg-orange-400 rounded-lg outline outline-solid outline-2`}
                         style={{
                           left: `${widthFactor * colIndex + offset}px`,
                           top: `${heightFactor * inverseLerp(Number(new Date(`1970-01-01T${slot.startTime}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][0]}Z`)), Number(new Date(`1970-01-01T${dayHours[dayIndex][dayHours[dayIndex].length - 1]}Z`)))}%`,

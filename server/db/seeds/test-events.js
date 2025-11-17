@@ -65,5 +65,50 @@ export async function seed(knex) {
         'Emerson Street, Napier Soundshell, Marine Parade or the Art Deco Trust, Memorial Square. Napier',
       price: 'NZ 0.00',
     },
+    {
+      name: 'BOOTLEGS & BURLESQUE: A DECO-GLAM CABARET',
+      host: 'INDEPENDENT EVENT',
+      bio: 'Step into a world of forbidden glamour and vintage rebellion at Bootlegs & Burlesque - where cocktails flow, boas swirl through the air, and the spirit of Deco-Glam reigns supreme. This immersive cabaret experience invites you to a night of sultry jazz, dazzling circus and elegant burlesque performances, all wrapped in a speakeasy setting. Cash bar (with featured cocktails) available. For tickets go to www.toitoivenues.co.nz',
+      dates: 'February 21, 2026 20:00-22:00',
+      location:
+        "Toitoi: Hawke's Bay Arts and Events Centre, 109 Hastings Street South, Eastbourne Corner, Hastings",
+      price: 'NZD 75.00',
+    },
+    {
+      name: 'BRUNCH WITH STYLE AT THE COUNTY HOTEL',
+      host: 'ASSOCIATED EVENT',
+      bio: 'Why not start your Deco Day with celebratory "French bubbles" at the County. Revel in the delights of a gourmet brunch matched with exceptional service and Art Deco fun and frivolity in charming surroundings. Dine for 1 hour. ',
+      dates:
+        'February 19, 2026 11:00-12:00;February 20, 2026 09:30-10:30;February 21, 2026 09:30-10:30;February 22, 2026 09:30-10:30;February 20, 2026 11:30-12:30;February 21, 2026 11:30-12:30;February 22, 2026 11:30-12:30;February 20, 2026 13:30-14:30;February 21, 2026 13:30-14:30;February 22, 2026 13:30-14:30',
+      location: 'The County Hotel, 12 Browning Street, Napier',
+      price: 'NZD 95.00',
+    },
+    {
+      name: 'KNEES UP',
+      host: 'ASSOCIATED EVENT',
+      bio: "The 1930s were a time of great social change and upheaval including The Great Depression, but amid the challenges, a strong sense of community and resilience shone through. A unique dining experience where audience participation will be encouraged. Enjoy a hearty cook- up and a cheerful singalong to the tunes of the 1920s and 1930s. Dress in your best recycled vintage 'make do and mended' outfits for a night to remember. For added comfort bring your own cushion to sit on!",
+      dates:
+        'February 19, 2026 19:00-21:30;February 20, 2026 19:00-21:30;February 21, 2026 19:00-21:30',
+      location: 'The Gatsby Room, K Kitchen and Bar,2 Tennyson Street, Napier',
+      price: 'NZD 50.00',
+    },
+    {
+      name: 'AS THE DUST SETTLES',
+      host: 'INDEPENDENT EVENT',
+      bio: 'In the aftermath of the 1931 earthquake, many Napier residents left their homes for makeshift camps in parks and along the foreshore. Although most houses remained standing, broken chimneys and windows, scattered debris, ongoing aftershocks and the loss of power meant it would be some time before people felt safe enough to return. This recreated encampment honours the community spirit shown in the days immediately following the earthquake, with coal range cooking and a field hospital re-creation remembering those who rolled up their sleeves to help one another.',
+      dates:
+        'February 20, 2026 10:00-19:00;February 21, 2026 10:00-19:00;February 22, 2026 10:00-16:00',
+      location: 'Beach front below the Sun Dial, Marine Parade, Napier',
+      price: 'NZD 0.00',
+    },
+    {
+      name: 'STEAM EXPLORER',
+      host: 'ASSOCIATED EVENT',
+      bio: "Travel in style on a 1904 Steam Traction Engine, take in the views around past the port and through Ahuriri to stop at the National Tobacco Company Building for a photo and quick visit to learn about some of its history. Then continue on to one of Napier's best kept secrets - the Faraday Museum - where you will be able to explore historic technology for a short time.We will then return back through town and Tennyson Street to our drop off point outside the MTG.Duration, 2 hours and 30 mins.",
+      dates:
+        'February 19, 2026 08:30-11:00;February 19, 2026 11:15-13:45;February 19, 2026 14:00-16:30;February 20, 2026 08:30-11:00;February 20, 2026 11:15-13:45;February 20, 2026 14:00-16:30',
+      location: 'Beach front below the Sun Dial, Marine Parade, Napier',
+      price: 'NZD 0.00',
+    },
   ])
 }
