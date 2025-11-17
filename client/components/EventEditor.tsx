@@ -135,7 +135,7 @@ function EventEditor({ event, onCreate, onDelete, onEdit }: Props) {
   }
 
   return (
-    <div className="z-20 flex flex-shrink-0 flex-col lg:h-screen w-full lg:sticky top-0 left-0 bottom-0 lg:w-[30rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
+    <div className="z-20 flex flex-shrink-0 flex-col lg:h-screen w-screen lg:sticky top-0 left-0 bottom-0 lg:w-[30rem] bg-purple-400 p-3 rounded-lg outline outline-solid outline-2">
       {mode === '' && event.id !== 0 && (
         <div className="editor contain">
           <p className="flex">

@@ -2,11 +2,13 @@ import Schedule from './Schedule'
 
 function App() {
   return (
-    <div className="text-lg font-['Boogaloo'] flex flex-col items-center lg:p-10 bg-violet-200">
+    <div className="text-lg font-['Boogaloo'] flex flex-col lg:p-10">
       <header className="header">
-        <h1 className="pb-10 text-6xl tracking-wide">Event Planner</h1>
+        <div className="flex justify-center">
+          <h1 className="pb-10 text-6xl tracking-wide">Event Planner</h1>
+        </div>
       </header>
-      <section className="main">
+      <section>
         <Schedule />
       </section>
     </div>
