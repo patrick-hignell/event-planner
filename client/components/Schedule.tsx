@@ -233,13 +233,13 @@ function Schedule() {
         {schedule.map((day, dayIndex) => (
           <div
             key={dayIndex}
-            className="p-3 gap-2 bg-blue-400 rounded-lg outline outline-solid outline-2"
+            className="p-3 gap-2 bg-blue-400 rounded-lg outline outline-solid outline-2 overflow-x-scroll"
           >
             <h2 className="text-[110%]">
               {day[0][0] && formatDate(day[0][0].day)}
             </h2>
             <div
-              className="grid grid-cols-1 grid-rows-1 p-3 gap-2 "
+              className="grid grid-cols-1 grid-rows-1 p-3 gap-2"
               style={{ width: widthFactor * day.length + 82 }}
             >
               {day[0][0] && (
