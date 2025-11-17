@@ -266,19 +266,17 @@ function Schedule() {
                     key={colIndex}
                     className="col-start-1 row-start-1 flex relative p-3 gap-2"
                     style={{
-                      height:
-                        ((Number(
-                          new Date(
-                            `1970-01-01T${dayStartEnd[dayIndex].endTime}Z`,
-                          ),
-                        ) -
-                          Number(
-                            new Date(
-                              `1970-01-01T${dayStartEnd[dayIndex].startTime}Z`,
-                            ),
-                          )) /
-                          3600000) *
-                        70.8,
+                      height: (dayHours[dayIndex].length - 1) * 70.8,
+                      // ((Number(
+                      //   new Date(`1970-01-01T${dayHours[dayIndex][0]}Z`),
+                      // ) -
+                      //   Number(
+                      //     new Date(
+                      //       `1970-01-01T${dayHours[dayIndex][dayHours[dayIndex].length - 1]}Z`,
+                      //     ),
+                      //   )) /
+                      //   3600000) *
+                      // 70.8,
                     }}
                   >
                     {col.map((slot) => (

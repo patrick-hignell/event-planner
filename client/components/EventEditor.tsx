@@ -499,7 +499,7 @@ function checkEvent(testEvent: Event | EventData) {
         }
         if (Number(date[3].split('-')[1].split(':')[0]) > 24) {
           alertMessage = "There aren't that many hours in a day (on earth)"
-          console.log('>24')
+          // console.log('>24')
           return false
         }
         if (
@@ -507,7 +507,7 @@ function checkEvent(testEvent: Event | EventData) {
           Number(date[3].split('-')[1].split(':')[1]) > 0
         ) {
           alertMessage = "There aren't that many hours in a day (on earth)"
-          console.log('>mins/day')
+          // console.log('>mins/day')
           return false
         }
         if (
@@ -515,7 +515,7 @@ function checkEvent(testEvent: Event | EventData) {
           Number(date[3].split('-')[1].split(':')[1]) >= 60
         ) {
           alertMessage = "There aren't that many minutes in an hour (on earth)"
-          console.log('>mins/hour')
+          // console.log('>mins/hour')
           return false
         }
         //console.log(new Date(`1970-01-01T${date[3].split('-')[0]}Z`))
